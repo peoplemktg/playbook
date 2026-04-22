@@ -1,348 +1,1992 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playbook Elite Luque Academy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #F8FAFC; color: #1E293B; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.8); }
-        .gradient-text { background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 6px; background: #E2E8F0; border-radius: 5px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: #4F46E5; cursor: pointer; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px rgba(79, 70, 229, 0.3); }
-        .tab-active { background-color: #4F46E5 !important; color: white !important; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0A0A0A">
+<title>Playbook · David</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #0A0A0A;
+  --surface: #141414;
+  --surface-2: #1C1C1C;
+  --surface-3: #242424;
+  --border: #2A2A2A;
+  --border-light: #383838;
+  --text: #FAFAFA;
+  --text-2: #A0A0A0;
+  --text-3: #606060;
+  --accent: #D4FF4E;
+  --accent-dark: #0F1A00;
+  --danger: #FF4E4E;
+  --warning: #FFA94E;
+  --success: #4EFF8A;
+  --info: #4EA8FF;
+}
+html { scroll-behavior: smooth; overscroll-behavior: none; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* ========== APP SHELL ========== */
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ========== HEADER ========== */
+.header {
+  position: sticky;
+  top: 0;
+  top: env(safe-area-inset-top);
+  background: rgba(10, 10, 10, 0.92);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  z-index: 100;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.logo em {
+  font-style: normal;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  vertical-align: 3px;
+  margin-left: 6px;
+}
+.back-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.back-btn.show { display: flex; }
+.back-btn:active { background: var(--surface-2); transform: scale(0.94); }
+.page-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 500;
+  display: none;
+}
+.page-title.show { display: block; }
+
+/* ========== SEARCH ========== */
+.search-wrap {
+  position: relative;
+}
+.search-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 44px 13px 44px;
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+}
+.search-input:focus {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+.search-input::placeholder {
+  color: var(--text-3);
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-3);
+  pointer-events: none;
+  width: 18px;
+  height: 18px;
+}
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface-3);
+  border: none;
+  color: var(--text-2);
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.search-clear.show { display: flex; }
+
+/* ========== MAIN ========== */
+main {
+  padding: 20px 16px 100px;
+}
+
+/* ========== HOME ========== */
+.home-view { display: block; }
+.home-view.hidden { display: none; }
+
+.intro {
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.intro::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 60%);
+  opacity: 0.15;
+}
+.intro-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.intro-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.intro-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  line-height: 1.15;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.intro-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 24px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Flow Stages */
+.flow-stages {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.flow-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+}
+.flow-card:active {
+  transform: scale(0.98);
+  background: var(--surface-2);
+}
+.flow-card-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  font-style: italic;
+  line-height: 1;
+  width: 44px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.flow-card-content {
+  flex: 1;
+  min-width: 0;
+}
+.flow-card-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.flow-card-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+.flow-card-arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+.flow-card-1 .flow-card-num { color: var(--info); }
+.flow-card-2 .flow-card-num { color: var(--accent); }
+.flow-card-3 .flow-card-num { color: var(--warning); }
+
+/* Quick Access Grid */
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.quick-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 96px;
+}
+.quick-card:active {
+  transform: scale(0.96);
+  background: var(--surface-2);
+}
+.quick-card-icon {
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.quick-card-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.25;
+}
+.quick-card.featured {
+  background: var(--accent);
+  color: var(--accent-dark);
+  border-color: var(--accent);
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  min-height: auto;
+}
+.quick-card.featured .quick-card-icon {
+  background: rgba(15, 26, 0, 0.15);
+  color: var(--accent-dark);
+}
+.quick-card.featured .quick-card-title {
+  color: var(--accent-dark);
+  font-size: 14px;
+}
+.quick-card.featured .quick-card-desc {
+  color: rgba(15, 26, 0, 0.7);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* Favorites */
+.fav-section {
+  margin-top: 28px;
+}
+.fav-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 13px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+/* ========== SCENARIO VIEW ========== */
+.scenario-view { display: none; }
+.scenario-view.active { display: block; }
+
+.scenario-header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.scenario-header-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.scenario-header-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  line-height: 1.1;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.scenario-header-desc {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* Message Cards */
+.msg-group {
+  margin-bottom: 16px;
+}
+.msg-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.msg-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.fav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.fav-btn.active {
+  color: var(--accent);
+}
+.fav-btn:active {
+  transform: scale(1.2);
+}
+
+.msg-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.18s;
+  position: relative;
+  white-space: pre-wrap;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+  display: block;
+}
+.msg-card:active {
+  background: var(--surface-2);
+  transform: scale(0.99);
+}
+.msg-card.type-wa {
+  border-left: 3px solid var(--success);
+}
+.msg-card.type-zoom {
+  border-left: 3px solid var(--info);
+  font-style: italic;
+  color: #E0E0E0;
+}
+.msg-card.type-urgent {
+  border-left: 3px solid var(--danger);
+}
+.msg-card.type-warm {
+  border-left: 3px solid var(--warning);
+}
+.msg-card-tap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+/* Tip boxes */
+.tip {
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  border: 1px solid;
+  display: flex;
+  gap: 10px;
+}
+.tip-icon {
+  flex-shrink: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.tip.gold {
+  background: rgba(212, 255, 78, 0.05);
+  border-color: rgba(212, 255, 78, 0.3);
+  color: #E8FFA0;
+}
+.tip.red {
+  background: rgba(255, 78, 78, 0.05);
+  border-color: rgba(255, 78, 78, 0.3);
+  color: #FFB8B8;
+}
+.tip.info {
+  background: rgba(78, 168, 255, 0.05);
+  border-color: rgba(78, 168, 255, 0.3);
+  color: #B8DBFF;
+}
+
+/* Subsection */
+.subsection-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text);
+  margin: 24px 0 10px;
+  line-height: 1.2;
+}
+.subsection-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+/* Phase cards (zoom phases) */
+.phase-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.phase-badge {
+  flex-shrink: 0;
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-right: 1px solid var(--border);
+  padding-right: 12px;
+}
+.phase-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  font-style: italic;
+  line-height: 1;
+  color: var(--accent);
+}
+.phase-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-3);
+}
+.phase-content {
+  flex: 1;
+}
+.phase-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+.phase-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.phase-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* FUP Day */
+.fup-day {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  position: relative;
+}
+.fup-day-badge {
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Instrument Serif', serif;
+  background: var(--surface-2);
+}
+.fup-day-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  text-transform: uppercase;
+  margin-bottom: 1px;
+}
+.fup-day-num {
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 400;
+}
+.fup-day-content { flex: 1; }
+.fup-day-title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.fup-day-desc {
+  font-size: 12.5px;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* Price Cards */
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.price-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.price-card-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: var(--text);
+}
+.price-card-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.price-card-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 12.5px;
+}
+.price-card-row-label {
+  color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.price-card-row-val {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+
+/* Objeciones list */
+.obj-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.obj-q {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--warning);
+  margin-bottom: 8px;
+}
+.obj-a {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.55;
+}
+
+/* Search results */
+.search-results {
+  display: none;
+}
+.search-results.active {
+  display: block;
+}
+.search-result-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+  display: block;
+}
+.search-result-item:active {
+  background: var(--surface-2);
+}
+.search-result-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+.search-result-location {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+.search-result-preview {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.search-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-3);
+  font-size: 14px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--accent);
+  color: var(--accent-dark);
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: all 0.25s;
+  pointer-events: none;
+  z-index: 200;
+  box-shadow: 0 10px 40px rgba(212, 255, 78, 0.3);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (min-width: 521px) {
+  .app {
+    min-height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+}
+</style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useMemo } = React;
+<div class="app">
 
-        const apiKey = ""; // AIzaSyBNg5Cx1aGdeK72mFy0Wn83CZPTj9c-pZo
+<!-- HEADER -->
+<header class="header">
+  <div class="header-top">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <button class="back-btn" id="backBtn" onclick="goHome()">←</button>
+      <div class="logo" id="logo">Playbook <em>v7</em></div>
+      <div class="page-title" id="pageTitle"></div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+    </svg>
+    <input type="search" class="search-input" id="searchInput" placeholder="Buscar mensaje, objeción, escenario..." autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
+  </div>
+</header>
 
-        const DATA = {
-            stages: [
-                { id: 0, title: "Pre-Calificación", time: "0-5 min", icon: "users", tip: "Conecta con el 'Gancho de Similitud'. ¿Es dueño o bombero?", 
-                  questions: ["¿Qué tipo de negocio lideras hoy?", "Sobre el VSL de la Kryptonita, ¿qué fue lo que más resonó contigo?", "Hey, estás en [País], ¿cómo va el mercado allá?"] },
-                { id: 1, title: "Freno de Mano", time: "5-15 min", icon: "shield-alert", tip: "Busca la Kryptonita. El negocio es un Ferrari con el freno puesto.", 
-                  questions: ["¿Qué es hoy ese 'freno de mano' que no te deja acelerar?", "¿Cuánto dinero dejas sobre la mesa por este desorden?", "Si no quitamos este freno hoy, ¿dónde estarás en 12 meses?"] },
-                { id: 2, title: "Calificación", time: "15-25 min", icon: "filter", tip: "Define el producto. <$5k = Axcelerate. >$5k = MDD.", 
-                  questions: ["¿Cuál es tu facturación mensual real?", "¿Tienes equipo o eres tú haciendo todo?", "¿Estás listo para dejar de ser bombero y ser el CEO?"] },
-                { id: 3, title: "Plan de 3 Pasos", time: "25-35 min", icon: "sparkles", tip: "Identidad, Sistemas y Escalabilidad.", formula: "Identidad Dron -> Sistemas -> Aceleración Ferrari." },
-                { id: 4, title: "Cierre Elite", time: "35-45 min", icon: "check-circle", tip: "Acción inmediata. La lista de espera es real.", 
-                  questions: ["¿Tarjeta de crédito o débito?", "Si no cerramos hoy, el cupo se libera. ¿Avanzamos?"] }
-            ],
-            templates: [
-                { cat: "Confirmación (Urgencia)", items: [
-                    { title: "24h Antes (Escasez)", text: "Hola [nombre], soy David de Luque Academy. Confirmada nuestra sesión de mañana para analizar tus fugas financieras y neutralizar tu Kryptonita. Como viste en el video, protegemos mucho el tiempo; si no confirmas hoy, el sistema cancelará la cita para dársela a alguien en lista de espera. ¿Confirmas?" },
-                    { title: "1h Antes (Recordatorio)", text: "Hola [nombre], en 1 hora empezamos. Ten a mano tus números reales para identificar dónde está la fuga financiera. Es solo una oportunidad para agendar. Nos vemos puntual aquí: [LINK]" }
-                ]},
-                { cat: "Seguimiento (Kryptonita)", items: [
-                    { title: "Post-Llamada (Acción)", text: "Hola [nombre], me quedé pensando en el plan de 3 acciones que diseñamos. Cada día que pasa sin ejecutarlo, la Kryptonita sigue drenando tus finanzas. ¿Activamos MDD hoy o dejamos que el cupo pase a la siguiente persona?" },
-                    { title: "Axcelerate ($195)", text: "Quedamos pendientes tras nuestra charla. Del 13 al 15 tenemos Axcelerate — 3 días de inmersión virtual para salir con un plan claro. Acceso especial por $195. ¿Lo retomamos?" }
-                ]}
-            ],
-            closingActions: [
-                { id: "paid", label: "Pagado ✅", color: "bg-emerald-50 text-emerald-700" },
-                { id: "link", label: "Link Enviado 🔗", color: "bg-blue-50 text-blue-700" },
-                { id: "nurturing", label: "Axcelerate ⏳", color: "bg-amber-50 text-amber-700" },
-                { id: "lost", label: "Perdido ❄️", color: "bg-rose-50 text-rose-700" }
-            ]
-        };
+<main>
 
-        const Icon = ({ name, size = 20, className = "" }) => {
-            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
-            return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
-        };
+<!-- HOME VIEW -->
+<div class="home-view" id="homeView">
 
-        const App = () => {
-            const [tab, setTab] = useState('live');
-            const [stage, setStage] = useState(0);
-            const [timer, setTimer] = useState(0);
-            const [isTimerRunning, setIsTimerRunning] = useState(false);
-            const [history, setHistory] = useState([]);
-            const [aiData, setAiData] = useState({ plan: "", objection: "", loading: false });
-            const [copyOk, setCopyOk] = useState("");
-            
-            const [form, setForm] = useState({ name: '', revenue: 0, kryptonite: '', status: 'nurturing' });
+  <div class="intro">
+    <div class="intro-label">Online · Luque Academy</div>
+    <div class="intro-title">¿Dónde estás<br>con el lead?</div>
+    <div class="intro-sub">Toca según el momento. O busca arriba.</div>
+  </div>
 
-            useEffect(() => {
-                try {
-                    const saved = localStorage.getItem('luque_elite_v6');
-                    if (saved) {
-                        const parsed = JSON.parse(saved);
-                        if (Array.isArray(parsed)) {
-                            setHistory(parsed);
-                        }
-                    }
-                } catch (e) {
-                    console.error("Error loading history", e);
-                }
-            }, []);
+  <div class="section-label">Flujo del lead</div>
+  <div class="flow-stages">
+    <button class="flow-card flow-card-1" onclick="abrirEscenario('antes')">
+      <div class="flow-card-num">01</div>
+      <div class="flow-card-content">
+        <div class="flow-card-title">Antes del Zoom</div>
+        <div class="flow-card-desc">Confirmación, 24h, 2h antes</div>
+      </div>
+      <div class="flow-card-arrow">→</div>
+    </button>
+    <button class="flow-card flow-card-2" onclick="abrirEscenario('durante')">
+      <div class="flow-card-num">02</div>
+      <div class="flow-card-content">
+        <div class="flow-card-title">Durante el Zoom</div>
+        <div class="flow-card-desc">5 fases · Urgencia · Cierre</div>
+      </div>
+      <div class="flow-card-arrow">→</div>
+    </button>
+    <button class="flow-card flow-card-3" onclick="abrirEscenario('fup')">
+      <div class="flow-card-num">03</div>
+      <div class="flow-card-content">
+        <div class="flow-card-title">Después — FUP 7 días</div>
+        <div class="flow-card-desc">Día 0/1/3/5/7 · Cierra ventana</div>
+      </div>
+      <div class="flow-card-arrow">→</div>
+    </button>
+  </div>
 
-            useEffect(() => {
-                let interval;
-                if (isTimerRunning) interval = setInterval(() => setTimer(t => t + 1), 1000);
-                return () => clearInterval(interval);
-            }, [isTimerRunning]);
+  <div class="section-label">Acceso rápido</div>
+  <div class="quick-grid">
+    <button class="quick-card featured" onclick="abrirEscenario('bonos')">
+      <div class="quick-card-icon">🎁</div>
+      <div>
+        <div class="quick-card-title">Bonos + Urgencia (3 capas)</div>
+        <div class="quick-card-desc">Úsalos en escalera · Zoom pantalla compartida</div>
+      </div>
+    </button>
+    <button class="quick-card featured" onclick="abrirEscenario('cupos')">
+      <div class="quick-card-icon">🔥</div>
+      <div>
+        <div class="quick-card-title">Urgencia de cupos Máquina</div>
+        <div class="quick-card-desc">3 scripts · Los momentos clave del zoom</div>
+      </div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('downsell')">
+      <div class="quick-card-icon">🎯</div>
+      <div class="quick-card-title">Downsell<br>Códigos $420</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('live')">
+      <div class="quick-card-icon">📹</div>
+      <div class="quick-card-title">Invitar Zoom<br>Live</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('objeciones')">
+      <div class="quick-card-icon">🛡️</div>
+      <div class="quick-card-title">Manejar<br>objeciones</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('noshow')">
+      <div class="quick-card-icon">🚫</div>
+      <div class="quick-card-title">No show /<br>Reagendar</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('pescar')">
+      <div class="quick-card-icon">🎣</div>
+      <div class="quick-card-title">Pescar<br>(sin agendar)</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('videos')">
+      <div class="quick-card-icon">▶️</div>
+      <div class="quick-card-title">Videos<br>Nutrición</div>
+    </button>
+    <button class="quick-card" onclick="abrirEscenario('precios')">
+      <div class="quick-card-icon">💰</div>
+      <div class="quick-card-title">Precios y<br>productos</div>
+    </button>
+  </div>
 
-            const copy = (txt) => {
-                const el = document.createElement("textarea"); el.value = txt; document.body.appendChild(el);
-                el.select(); document.execCommand('copy'); document.body.removeChild(el);
-                setCopyOk("¡Copiado!"); setTimeout(() => setCopyOk(""), 2000);
-            };
+  <div class="fav-section">
+    <div class="section-label">Favoritos</div>
+    <div id="favoritesContainer">
+      <div class="fav-empty">Aún no tienes favoritos. Toca la ★ en cualquier mensaje.</div>
+    </div>
+  </div>
 
-            const analyze = async () => {
-                if (!form.kryptonite || !form.name) return;
-                setAiData(prev => ({ ...prev, loading: true }));
-                const prompt = `Analiza para Luque Academy: Dueño ${form.name}, Kryptonita: ${form.kryptonite}, Factura: $${form.revenue}. Crea un PLAN de 3 pasos (Identidad, Sistemas, Escalabilidad) y una OBJECION con REBATE basado en el Ferrari y el Freno de Mano. Formato: PLAN: ... OBJECION: ... REBATE: ...`;
+</div>
 
-                try {
-                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    const d = await res.json();
-                    const txt = d.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                    
-                    const planPart = txt.split(/OBJECION:/i)[0].replace(/PLAN:/i, '').trim();
-                    const objectionPart = txt.split(/OBJECION:/i)[1] || "";
-                    
-                    setAiData({ plan: planPart, objection: objectionPart, loading: false });
-                    setStage(3);
-                } catch (e) { 
-                    setAiData(prev => ({ ...prev, loading: false })); 
-                }
-            };
+<!-- SEARCH RESULTS VIEW -->
+<div class="search-results" id="searchResults"></div>
 
-            const save = () => {
-                const newEntry = { ...form, id: Date.now(), date: new Date().toLocaleDateString(), plan: aiData.plan };
-                const updated = [newEntry, ...history];
-                setHistory(updated);
-                localStorage.setItem('luque_elite_v6', JSON.stringify(updated));
-                setForm({ name: '', revenue: 0, kryptonite: '', status: 'nurturing' });
-                setAiData({ plan: "", objection: "", loading: false });
-                setTimer(0); setIsTimerRunning(false); setTab('history');
-            };
+<!-- SCENARIO VIEWS (populated dynamically) -->
+<div class="scenario-view" id="scenarioView"></div>
 
-            return (
-                <div className="min-h-screen flex flex-col">
-                    {copyOk && <div className="fixed top-24 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-8 py-3 rounded-full z-[100] shadow-2xl font-bold animate-bounce text-sm">{copyOk}</div>}
+</main>
 
-                    {/* Navbar Elite */}
-                    <header className="bg-white border-b border-slate-200 py-4 px-8 sticky top-0 z-50 flex flex-col md:flex-row justify-between items-center gap-4 shadow-sm">
-                        <div className="flex items-center gap-4">
-                            <div className="bg-indigo-600 p-2.5 rounded-2xl shadow-lg shadow-indigo-100"><Icon name="shield-check" className="text-white" /></div>
-                            <div>
-                                <h1 className="text-xl font-black uppercase tracking-tighter gradient-text">Playbook Elite</h1>
-                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Luque Academy · David Muñoz</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-6">
-                            <div className="flex items-center gap-3 bg-slate-50 px-5 py-2 rounded-2xl border border-slate-100">
-                                <span className="font-mono text-xl font-black text-slate-700">{Math.floor(timer/60)}:{String(timer%60).padStart(2,'0')}</span>
-                                <button onClick={() => setIsTimerRunning(!isTimerRunning)} className={`px-5 py-1.5 rounded-xl text-[10px] font-black tracking-widest transition-all ${isTimerRunning ? 'bg-rose-500 text-white shadow-lg shadow-rose-100' : 'bg-emerald-500 text-white shadow-lg shadow-emerald-100'}`}>
-                                    {isTimerRunning ? 'STOP ZOOM' : 'START LIVE'}
-                                </button>
-                            </div>
-                        </div>
-                    </header>
+</div>
 
-                    <div className="max-w-7xl mx-auto w-full p-6 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-8 flex-1">
-                        {/* Sidebar */}
-                        <aside className="md:col-span-3 space-y-4">
-                            <nav className="space-y-2">
-                                {[
-                                    { id: 'live', icon: 'zap', label: 'Script de Venta' },
-                                    { id: 'templates', icon: 'send', label: 'Plantillas WhatsApp' },
-                                    { id: 'history', icon: 'history', label: 'Historial Cierres' }
-                                ].map(t => (
-                                    <button key={t.id} onClick={() => setTab(t.id)} className={`w-full flex items-center gap-4 p-5 rounded-[2rem] font-bold text-sm transition-all ${tab === t.id ? 'tab-active' : 'bg-white text-slate-500 hover:bg-slate-50 border border-slate-100 shadow-sm'}`}>
-                                        <Icon name={t.icon} /> {t.label}
-                                    </button>
-                                ))}
-                            </nav>
-                            <div className="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/50">
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Comisiones Estimadas</p>
-                                <div className="text-4xl font-black text-slate-900 leading-none">${(history?.length || 0) * 90}</div>
-                                <p className="text-[10px] mt-4 text-indigo-500 font-bold italic leading-tight">"Sin fecha = Lead muerto."</p>
-                            </div>
-                        </aside>
+<div class="toast" id="toast">✓ Copiado al portapapeles</div>
 
-                        {/* Content Area */}
-                        <section className="md:col-span-9">
-                            {tab === 'live' && (
-                                <div className="space-y-8 animate-in fade-in duration-500">
-                                    {/* Timeline Stepper */}
-                                    <div className="bg-white p-5 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex justify-between gap-4 overflow-x-auto no-scrollbar">
-                                        {DATA?.stages?.map((s, idx) => (
-                                            <button key={idx} onClick={() => setStage(idx)} className={`flex-shrink-0 flex flex-col items-center p-4 rounded-3xl transition-all min-w-[120px] ${stage === idx ? 'bg-indigo-50 border border-indigo-100 ring-2 ring-indigo-500/10' : 'opacity-40'}`}>
-                                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-2 shadow-sm ${stage === idx ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}><Icon name={s.icon} /></div>
-                                                <span className="text-[10px] font-black uppercase tracking-tighter">{s.title}</span>
-                                            </button>
-                                        ))}
-                                    </div>
+<script>
+// ========== DATA ==========
+const DATA = {
+  antes: {
+    title: 'Antes del Zoom',
+    label: 'Etapa 01',
+    desc: 'Los 3 mensajes obligatorios. Reducen el no show drásticamente.',
+    tip: { type: 'gold', text: 'Antes de escribir el primer mensaje — busca al lead en Instagram/Google. 5 minutos. Necesitas munición para conectar.' },
+    sections: [
+      {
+        subtitle: 'Mensaje 1 — Inmediato al agendar',
+        messages: [
+          {
+            id: 'a1',
+            type: 'wa',
+            label: 'Confirmación personalizada',
+            text: 'Hola [Nombre]! Soy David, tu consultor de Luque Academy. Vi que agendaste tu sesión 1a1 para el [día] a las [hora]. En esta llamada vamos a identificar tu Kryptonita empresarial, ver dónde están las fugas específicas y diseñar las 3 acciones concretas para neutralizarla. [Agregar algo personal si encontraste: "Vi que eres de Medellín — ¿cuánto llevas con el negocio allá?"]. Cualquier cosa aquí estoy.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Mensaje 2 — 24 horas antes',
+        messages: [
+          {
+            id: 'a2',
+            type: 'warm',
+            label: 'Reflexión previa',
+            text: 'Hola [Nombre], mañana a las [hora] es nuestra sesión. Para aprovecharla al máximo piensa en esto antes de llegar: si tuvieras que describir en una frase lo que más te está frenando en tu negocio ahorita — esa es tu Kryptonita. Llega con eso claro y vamos directo al punto. Te espero mañana.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Mensaje 3 — 2 horas antes',
+        messages: [
+          {
+            id: 'a3',
+            type: 'urgent',
+            label: 'Confirmación final',
+            text: 'Hola [Nombre], en 2 horas neutralizamos tu Kryptonita. ¿Confirmas que sigues para nuestra sesión de hoy a las [hora]? Aquí el link: [link zoom]'
+          }
+        ]
+      }
+    ],
+    bottomTip: { type: 'red', text: 'Si no confirma 2 horas antes — llamar directo. Un audio de 20 segundos baja el no show drásticamente.' }
+  },
+  durante: {
+    title: 'Durante el Zoom',
+    label: 'Etapa 02',
+    desc: 'Estructura de 45 min. 3 momentos de urgencia distribuidos, no al final.',
+    phases: [
+      { n: '1', time: '0-5 min', name: 'Abrir', title: 'Engage real + encuadre', desc: 'Usa lo que investigaste. Deja que hable 3-4 min de algo que le apasiona. Eso genera las risas.' },
+      { n: '2', time: '5-20 min', name: 'Dolor', title: 'Kryptonita + tiempo + costo', desc: 'Las 3 preguntas ancla. Deja que ÉL calcule el costo. Ese número es tu palanca.' },
+      { n: '3', time: '20-28 min', name: 'Presentar', title: 'Conectar Kryptonita → MDD + 🔥 URGENCIA 1', desc: 'Máximo 8 minutos. SOLO el sistema que resuelve SU Kryptonita. Al final activas urgencia de cupos.' },
+      { n: '4', time: '28-38 min', name: 'Precio', title: 'Costo problema vs inversión + 🔥 URGENCIA 2', desc: 'Primero cuánto le cuesta la Kryptonita. Después el precio. Recuerdas cupos limitados.' },
+      { n: '5', time: '38-45 min', name: 'Cerrar', title: 'Cómo quiere pagar + 🔥 URGENCIA 3', desc: 'No preguntes si quiere. Pregunta cómo. Si duda, activas urgencia final.' }
+    ],
+    sections: [
+      {
+        subtitle: 'Fase 1 — Encuadre de 3 promesas',
+        messages: [
+          {
+            id: 'd1',
+            type: 'zoom',
+            label: 'Después del engage inicial',
+            text: '[Nombre], antes de meternos al tema — hoy vamos a hacer 3 cosas: identificar cuál es tu Kryptonita empresarial, ver exactamente dónde están las fugas en tu negocio, y diseñar juntos las 3 acciones concretas para neutralizarla. Al final tú decides si quieres seguir trabajando esto con mi equipo. Sin presión. ¿Empezamos? Viste el video de Álvaro sobre la Kryptonita. ¿Cuál sientes tú que es la tuya ahorita?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Fase 2 — Las 3 preguntas ancla',
+        messages: [
+          { id: 'd2', type: 'zoom', label: 'Pregunta 1 — Tiempo', text: '¿Cuánto tiempo llevas con esa Kryptonita activa en tu negocio?' },
+          { id: 'd3', type: 'zoom', label: 'Pregunta 2 — Intento', text: '¿Qué has intentado para resolverlo? ¿Falló la estrategia o la implementación?' },
+          { id: 'd4', type: 'zoom', label: 'Pregunta 3 — Costo', text: 'Y en ese tiempo, ¿cuánto crees que te ha costado no haberla neutralizado? En dinero, tiempo y energía.' }
+        ]
+      },
+      {
+        subtitle: 'Fase 3 — Fórmula de presentación',
+        messages: [
+          {
+            id: 'd5',
+            type: 'zoom',
+            label: 'Conectar con MDD',
+            text: '[Nombre], lo que me describes — [repite su Kryptonita con SUS palabras] — es exactamente el Sistema de [Liderazgo/Finanzas/Ventas/Escala] de Máquina. Ese sistema hace [resultado específico que él quiere]. No es información — es implementación con acompañamiento durante un año completo.'
+          }
+        ]
+      }
+    ]
+  },
+  cupos: {
+    title: 'Urgencia de Cupos Máquina',
+    label: 'Script clave',
+    desc: 'Tu palanca más poderosa. Máquina abre por generaciones, tienes cupos asignados. Si no decide, espera 60-90 días.',
+    tip: { type: 'gold', text: 'ESTO ES VERDAD — NO MANIPULACIÓN: Luque abre por generaciones para dar mejor acompañamiento. Dilo con la seguridad de saber que es real.' },
+    sections: [
+      {
+        subtitle: 'Momento 1 — Después de presentar (min 25-28)',
+        messages: [
+          {
+            id: 'c1',
+            type: 'urgent',
+            label: 'Antes de hablar de inversión',
+            text: '[Nombre], una cosa importante antes de hablar de inversión — Luque abre Máquina por generaciones para poder dar mejor acompañamiento. Yo tengo cupos asignados para esta generación y ya están entrando personas. Si no decides esta semana, el cupo se va y esperas al próximo lanzamiento. Eso son 60 a 90 días mínimo. Te lo digo para que tomes la decisión con toda la información.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Momento 2 — Cuando pregunta precio (min 30-32)',
+        messages: [
+          {
+            id: 'c2',
+            type: 'urgent',
+            label: 'La inversión con urgencia',
+            text: 'La inversión es [precio]. Pero te tengo que ser honesto — esta generación abre con cupos limitados porque Luque y su equipo dan acompañamiento personalizado, no es un curso masivo. Tengo cupos disponibles esta semana. Si decides hoy, entras. Si no, el próximo grupo abre en 60-90 días.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Momento 3 — Si duda al final (min 40-45)',
+        messages: [
+          {
+            id: 'c3',
+            type: 'urgent',
+            label: 'Necesito tu sí o tu no',
+            text: '[Nombre], entiendo que es una decisión importante. Pero necesito tu sí o tu no esta semana — no porque te presione, sino porque si reservas el cupo y no decides, otros empresarios que también están listos se quedan sin entrar. Si hoy no es el momento, esperas el próximo lanzamiento en 60-90 días y está perfecto. ¿Qué decides?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Si pregunta "¿cuántos cupos tienes?"',
+        messages: [
+          {
+            id: 'c4',
+            type: 'zoom',
+            label: 'Respuesta sin mentir',
+            text: 'Tengo un número limitado asignado para esta generación — lo que te puedo decir es que están entrando personas esta semana. Lo importante no es cuántos quedan, es si tú estás listo para neutralizar tu Kryptonita ahora o esperas 2-3 meses más dejándola actuar en tu negocio.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Si dice "dame unos días para pensarlo"',
+        messages: [
+          {
+            id: 'c5',
+            type: 'zoom',
+            label: 'Divide la objeción',
+            text: 'Claro. Para ayudarte a pensarlo mejor — ¿qué es exactamente lo que necesitas resolver? Porque son dos cosas distintas: 1) tomar la decisión y 2) acceder al capital. Dime cuál es, y así sé si tiene sentido guardarte el cupo o lo dejo para alguien más.'
+          }
+        ]
+      }
+    ]
+  },
+  downsell: {
+    title: 'Downsell a Códigos del Dinero',
+    label: '$420 USD · Puente',
+    desc: 'Códigos NO es rebaja de Máquina. Es puente para que no pierda momentum. Ofrécelo al final del zoom, no durante.',
+    tip: { type: 'info', text: 'Incluye: sesión mensual con Álvaro, comunidad cerrada, grabaciones, estrategias filtradas, ejercicios prácticos, acceso prioritario a Máquina cuando abra.' },
+    sections: [
+      {
+        subtitle: '¿Cuándo SÍ ofrecerlo?',
+        messages: [
+          {
+            id: 'dw0',
+            type: 'wa',
+            label: 'Reglas de oro',
+            text: 'SÍ: Cuando dice "no tengo capital pero me gusta" (puente) · Cuando dice "no es el momento, sigo en etapa temprana" · Cuando no califica para Máquina porque está muy inicial.\n\nNO: Cuando dijo que sí a Máquina (cierra Máquina) · Cuando dice "déjame pensarlo" (ve al FUP primero).'
+          }
+        ]
+      },
+      {
+        subtitle: 'Script para presentar como puente',
+        messages: [
+          {
+            id: 'dw1',
+            type: 'zoom',
+            label: 'Transición después del "no puedo ahora"',
+            text: '[Nombre], entiendo. Mira — lo que yo no quiero es que salgas de esta llamada y sigas dejando que tu Kryptonita drene tu negocio 60 días más esperando al próximo lanzamiento de Máquina. Luque tiene otra opción, que se llama Códigos del Dinero, y la uso contigo exactamente como un puente. Es la membresía mensual donde Álvaro te acompaña cada mes en vivo, tienes comunidad de empresarios, grabaciones, estrategias. Son $420. Entras hoy, empiezas a trabajar en tu Kryptonita desde adentro, y cuando abra la próxima generación de Máquina tienes acceso prioritario y precio preferencial. ¿Te tiene sentido?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Qué recibe — úsalo al presentar',
+        messages: [
+          {
+            id: 'dw2',
+            type: 'zoom',
+            label: 'Lista de beneficios',
+            text: '• Sesión mensual EN VIVO con Álvaro Luque\n• Grabaciones completas si no puedes estar en vivo\n• Acceso a comunidad cerrada de empresarios que están creciendo\n• Estrategias filtradas — PDFs con lo que Álvaro usa en su propia empresa\n• Ejercicios prácticos para implementar cada mes\n• Acceso prioritario y precio preferencial cuando abra la próxima Máquina'
+          }
+        ]
+      },
+      {
+        subtitle: 'Cierre directo de Códigos',
+        messages: [
+          {
+            id: 'dw3',
+            type: 'zoom',
+            label: 'Pregunta por el correo',
+            text: 'Son $420 USD de una sola vez. Entras hoy, arrancas con la sesión de este mes con Álvaro, y te quedas en la comunidad. ¿A qué correo te mando el acceso?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Si Códigos también le queda caro',
+        messages: [
+          {
+            id: 'dw4',
+            type: 'zoom',
+            label: 'Honesto y firme',
+            text: '[Nombre], te voy a ser honesto — si $420 al mes te queda grande, el tema no es el producto, es que tu negocio aún no genera lo suficiente para invertir en formación. Y eso está perfecto. Lo que te recomiendo: enfócate en vender los próximos 60 días, guarda, y cuando abra la próxima generación de Máquina vuelves. Aquí vamos a estar.'
+          }
+        ]
+      }
+    ]
+  },
+  fup: {
+    title: 'FUP 7 Días',
+    label: 'Etapa 03',
+    desc: 'Ventana de 7 días anclada en la Kryptonita. Día 7 cierra. Post día 7 → Nutrición (Zoom Lives).',
+    tip: { type: 'gold', text: 'En el Día 0 ya le avisaste que hay ventana de 7 días. No es sorpresa — es coherencia.' },
+    fupDays: [
+      { n: '0', label: 'Día 0', title: 'Cierre del Zoom — Recap mismo día', desc: 'Anclaje: Kryptonita + costo que él calculó. Aviso de ventana.', color: 'var(--danger)' },
+      { n: '1', label: 'Día 1', title: '¿Qué te quedó dando vueltas?', desc: 'Pregunta abierta. Él habla de lo que más lo impactó.', color: 'var(--warning)' },
+      { n: '3', label: 'Día 3', title: 'Prueba social — testimonio', desc: 'Identificación. Pregunta si habló con pareja/socio.', color: 'var(--info)' },
+      { n: '5', label: 'Día 5', title: 'Separar: ¿momento o acceso?', desc: 'Divides la objeción. Aquí ofreces Códigos si aplica.', color: 'var(--accent)' },
+      { n: '7', label: 'Día 7', title: 'Cierre ventana — 3 opciones sin 4ta', desc: 'O Máquina, o Códigos, o espera próximo lanzamiento.', color: 'var(--text)' }
+    ],
+    sections: [
+      {
+        subtitle: 'Día 0 — Recap mismo día del zoom',
+        messages: [
+          {
+            id: 'f0',
+            type: 'wa',
+            label: 'Cierre del zoom + aviso de ventana',
+            text: '[Nombre], gracias por tu tiempo hoy. Me quedé pensando en lo que me contaste — tu Kryptonita de [la que identificaron] es real y cada día que pasa sigue drenando tu negocio. Te voy a escribir los próximos días: lunes, miércoles y viernes. El día 7 cierra la ventana de este cupo y pasas al próximo lanzamiento. Cuando puedas, dime qué decidiste.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Día 1 — Recap',
+        messages: [
+          {
+            id: 'f1',
+            type: 'warm',
+            label: 'Pregunta abierta',
+            text: 'Hola [Nombre], ayer/anteayer hablamos de [su Kryptonita específica]. ¿Qué parte de lo que vimos te quedó dando vueltas? Me interesa saber porque a veces las respuestas más importantes llegan un día después, cuando se asienta.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Día 3 — Prueba social',
+        messages: [
+          {
+            id: 'f3',
+            type: 'wa',
+            label: 'Testimonio + pregunta colateral',
+            text: 'Hola [Nombre]. Me acordé de ti porque justo hoy un empresario que entró a Máquina hace 3 meses me compartió que resolvió exactamente [la Kryptonita que tu lead identificó]. Él venía con lo mismo que tú — [repite con sus palabras]. Y lo que cambió fue el sistema, no el esfuerzo. ¿Ya tuviste chance de hablar con [pareja/socio] del tema?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Día 5 — Separar acceso vs deseo',
+        messages: [
+          {
+            id: 'f5',
+            type: 'warm',
+            label: 'Divide la objeción',
+            text: 'Hola [Nombre]. Te escribo directo porque quedan 2 días antes de que cierre tu cupo en esta generación. Tengo una sola pregunta — ¿lo que te tiene parado es que NO es el momento para ti, o es el acceso al ticket? Son dos cosas distintas y se resuelven diferente. Dime cuál es y vemos qué hacemos.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Día 7 — Cierre de ventana',
+        messages: [
+          {
+            id: 'f7',
+            type: 'urgent',
+            label: '3 opciones sin cuarta',
+            text: '[Nombre], hoy cierra la ventana de tu cupo en esta generación de Máquina. Te lo pongo simple — tienes 3 opciones:\n\n1) Entras a Máquina hoy y arrancas esta semana.\n2) Entras a Códigos del Dinero ($420) como puente y cuando abra la próxima generación tienes acceso prioritario.\n3) Esperas 60-90 días al próximo lanzamiento y tu Kryptonita sigue actuando todo ese tiempo.\n\nSea cual sea, necesito tu respuesta hoy porque el cupo se va. ¿Cuál eliges?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Día 8 — Cierre con respeto (si no respondió)',
+        messages: [
+          {
+            id: 'f8',
+            type: 'wa',
+            label: 'Suave. No insistas más.',
+            text: '[Nombre], veo que este no fue el momento. Está bien. Tu cupo pasa al próximo lanzamiento. Te voy a seguir invitando a los Zoom Lives mensuales con expertos — sin compromiso, solo para que sigas creciendo. El próximo es [fecha]. Cuídate mucho.'
+          }
+        ]
+      },
+      {
+        subtitle: 'VARIANTES DE URGENCIA — Según el momento',
+        messages: [
+          {
+            id: 'fu1',
+            type: 'urgent',
+            label: 'Si estamos en las primeras 24h post-zoom — empuja bonos',
+            text: '[Nombre], te recuerdo algo importante — si decides entrar en las próximas horas todavía alcanzas los 2 bonos de 24 horas: Axelerate (3 días virtuales con Álvaro, incluye a tu pareja o socio) + el Análisis de Negocio personalizado. Son bonos que NO vuelven a aparecer después. ¿Lo activamos hoy?'
+          },
+          {
+            id: 'fu2',
+            type: 'urgent',
+            label: 'Si se acerca el cierre de la puerta (lunes)',
+            text: '[Nombre], el lunes a las 11:59pm cierra la puerta de esta generación. Después se cierra y no vuelve a abrir por 60 a 90 días mínimo. Lo que hemos identificado de tu Kryptonita sigue actuando todo ese tiempo. ¿Entramos antes del cierre?'
+          },
+          {
+            id: 'fu3',
+            type: 'warm',
+            label: 'Empuje al pago único — si tiene capital',
+            text: '[Nombre], una cosa que quiero que consideres — si entras con el pago único de $1,995 te ahorras $400 contra las cuotas, Y te quedas con Acceso VITALICIO (actualizaciones de por vida). Las cuotas no tienen Vitalicio. Si tienes el capital disponible, el contado es el que más sentido financiero tiene. ¿Cómo lo ves?'
+          }
+        ]
+      }
+    ]
+  },
+  live: {
+    title: 'Zoom Live — Invitación',
+    label: 'Nutrición · Miércoles 7pm',
+    desc: '2 Lives mensuales con expertos de Luque. Cómo invitar y reactivar tibios post día 7.',
+    tip: { type: 'gold', text: 'El mensaje post-live es oro. El lead viene caliente después de 1h de valor y tienes gancho natural para retomar.' },
+    sections: [
+      {
+        subtitle: 'Invitación inicial (días antes)',
+        messages: [
+          {
+            id: 'l1',
+            type: 'warm',
+            label: 'Invitación sin presión',
+            text: 'Hola [Nombre], quería invitarte a un Zoom Live gratuito este miércoles a las 7pm con [nombre del experto]. Va a hablar de [tema específico conectado a su Kryptonita]. No es venta, es 1 hora de valor real. Pensé en ti porque te va a resonar mucho con lo que hablamos. ¿Te puedo apartar el cupo?'
+          }
+        ]
+      },
+      {
+        subtitle: 'HOY — Día del evento',
+        messages: [
+          {
+            id: 'l2a',
+            type: 'urgent',
+            label: 'Versión con Kryptonita + link',
+            text: 'Hola [Nombre]! 🔥\n\nHoy a las 7:00pm COL tenemos un Zoom Live EN VIVO con uno de los mentores TOP de Luque Academy.\n\nEs 1 hora de puro valor — sin relleno, sin venta dura. Solo estrategia real que puedes aplicar en tu negocio esta misma semana.\n\nMe acordé de ti por lo que hablamos de [Kryptonita del lead] — hoy justamente se va a tocar ese tema.\n\n👉 Link de conexión: [LINK ZOOM]\n\n⏰ 7:00pm Colombia / 6:00pm México\n📅 Solo hoy, no se graba completo\n\n¿Nos vemos allá?'
+          },
+          {
+            id: 'l2b',
+            type: 'urgent',
+            label: 'Versión corta',
+            text: '[Nombre], HOY a las 7:00pm COL 🚀\n\nZoom Live EN VIVO con uno de los mentores TOP de Luque Academy. 1 hora, pura estrategia, cero humo.\n\n👉 Link: [LINK ZOOM]\n\n⏰ 7:00pm Colombia\n📲 Entra directo desde tu celular o compu\n\nTrae café y tu cuaderno. Vale la pena.'
+          },
+          {
+            id: 'l2c',
+            type: 'urgent',
+            label: 'Versión con privilegio',
+            text: 'Hola [Nombre] 👋\n\nTe quiero invitar a algo que pasa HOY y que no puedes dejar pasar:\n\n🎯 Zoom Live con uno de los mentores TOP de Luque Academy\n⏰ Hoy 7:00pm COL\n👉 Link: [LINK ZOOM]\n\nEs de los espacios donde Álvaro y su equipo comparten estrategias que normalmente solo están en Máquina. Hoy lo abren para algunos empresarios seleccionados.\n\nPensé en ti porque lo que vas a escuchar conecta directo con tu Kryptonita. ¿Te aparto el lugar?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Recordatorio 2 horas antes',
+        messages: [
+          {
+            id: 'l3',
+            type: 'warm',
+            label: 'Con valor específico',
+            text: '[Nombre], en 2 horas empezamos el Live. Álvaro/experto va a mostrar en vivo [algo específico]. Aquí el link: [link]. Trae café y tu cuaderno — vale la pena.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Post-Live — FUP inmediato (mismo día)',
+        messages: [
+          {
+            id: 'l4',
+            type: 'urgent',
+            label: 'Oro. Retoma con gancho natural.',
+            text: '[Nombre], ¿qué te pareció el Live? Lo que Álvaro dijo sobre [tema específico] me recordó exactamente lo que hablamos en nuestra sesión — tu Kryptonita de [la que identificaron]. Esta semana se abrió un cupo para la próxima generación de Máquina. ¿Lo tomamos?'
+          }
+        ]
+      }
+    ]
+  },
+  noshow: {
+    title: 'No Show / Reagendar',
+    label: 'Una sola oportunidad',
+    desc: 'El VSL ya les dijo que solo tienen una oportunidad de agendar. Recuérdaselo — es verdad.',
+    sections: [
+      {
+        subtitle: 'No se conectó — primeros 15 minutos',
+        messages: [
+          {
+            id: 'n1',
+            type: 'urgent',
+            label: 'Empático pero firme',
+            text: 'Hola [Nombre], vi que no pudimos conectarnos hoy a las [hora]. Entiendo que pasan imprevistos. Tengo un último espacio disponible esta semana — los demás ya los tomaron otros empresarios. ¿Lo agendamos hoy mismo o lo dejo para el próximo lanzamiento?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Quiere reagendar',
+        messages: [
+          {
+            id: 'n2',
+            type: 'urgent',
+            label: 'Urgencia + compromiso real',
+            text: '[Nombre], te puedo reagendar pero es el último espacio que tengo esta semana — otros no pudieron tomarlo por ese lugar. Si lo apartas es para llegar, porque si no lo usas, otro empresario lo pierde también. Y recuerda — mientras no neutralizamos tu Kryptonita, sigue drenando tu negocio cada día. ¿Lo tomamos?'
+          }
+        ]
+      }
+    ],
+    bottomTip: { type: 'red', text: 'Si no responde después del reagendamiento — FRÍO en Excel. No perseguir más esa semana. Pasa a Zoom Lives al mes siguiente.' }
+  },
+  pescar: {
+    title: 'Pescar — Quiz sin agendar',
+    label: 'Activación',
+    desc: 'Hicieron quiz, calificaron, vieron VSL — pero no agendaron. No están fríos. Entras como persona real.',
+    sections: [
+      {
+        subtitle: 'Mensaje 1 — Mismo día',
+        messages: [
+          {
+            id: 'p1',
+            type: 'wa',
+            label: 'Entrada humana',
+            text: 'Hola [Nombre], soy David de Luque Academy. Vi que hiciste el quiz y quedaste pendiente de agendar. Rápida pregunta — ¿a qué te dedicas y qué fue lo que más te resonó del video de Álvaro?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Mensaje 2 — Sin respuesta en 24h',
+        messages: [
+          {
+            id: 'p2',
+            type: 'warm',
+            label: 'Con lenguaje Kryptonita',
+            text: 'Hola [Nombre], te escribo porque el quiz dice que tu negocio tiene potencial real. ¿Cuál sientes que es la mayor Kryptonita de tu negocio ahorita?'
+          }
+        ]
+      },
+      {
+        subtitle: 'Mensaje 3 — Sin respuesta en 4 días',
+        messages: [
+          {
+            id: 'p3',
+            type: 'wa',
+            label: 'Última pregunta honesta',
+            text: 'Hola [Nombre], última pregunta y te dejo tranquilo — cuando hiciste el quiz, ¿qué fue lo que te hizo hacerlo? Eso generalmente dice mucho de lo que realmente necesitas.'
+          }
+        ]
+      }
+    ]
+  },
+  objeciones: {
+    title: 'Objeciones',
+    label: 'Respuestas con Kryptonita + Urgencia',
+    desc: 'Toca la objeción para ver la respuesta. Todas usan marco Kryptonita + cupos limitados.',
+    objeciones: [
+      { q: '"Déjame pensarlo"', a: '"¿Qué es lo que necesitas pensar? Mientras piensas, tu Kryptonita sigue drenando tu negocio. Y recuerda que mi cupo cierra esta semana."' },
+      { q: '"Es muy caro"', a: '"¿Cuánto te está costando tu Kryptonita cada mes? Ya estás pagando — sin recibir nada a cambio. Máquina son $600 para entrar."' },
+      { q: '"No tengo dinero ahorita"', a: '"Si el dinero no fuera el tema hoy, ¿tomarías la decisión? — Si sí: opciones de pago o Códigos $420. Si no: hay otra objeción debajo."' },
+      { q: '"Necesito consultarlo"', a: '"Perfecto. ¿Cuándo pueden hablar los dos — hoy o mañana? Agendamos llamada rápida con los dos. Sin eso, el cupo no aguanta."' },
+      { q: '"Ya tomé otros cursos"', a: '"Los cursos dan información. Máquina es implementación con acompañamiento durante un año. Esa es la diferencia."' },
+      { q: '"No tengo tiempo"', a: '"¿Cuánto tiempo le dedicas a empujar todo tú solo? Máquina son 20 min al día — menos de lo que gastas apagando fuegos."' },
+      { q: '"¿Y si no me sirve?"', a: '"La pregunta correcta es: ¿y si sigues 6 meses más con la Kryptonita activa? El riesgo real es quedarte como estás."' },
+      { q: '"Espero al próximo lanzamiento"', a: '"Es tu decisión. Pero son 60-90 días más. En ese tiempo tu Kryptonita te cuesta [X] según lo que calculaste. ¿Vale la pena?"' }
+    ]
+  },
+  videos: {
+    title: 'Videos de Nutrición',
+    label: 'Canal Luque · WhatsApp FUP',
+    desc: 'Un tap copia el link. Úsalos en FUP días 1, 3, 5 o en nutrición post día 7. Organizados por Kryptonita y momento.',
+    tip: { type: 'gold', text: 'No mandes el link solo. Siempre con una frase que conecte con SU dolor. El mensaje está debajo de cada video.' },
+    sections: [
+      {
+        subtitle: '🔥 Kryptonita de Liderazgo — "Todo depende de mí"',
+        messages: [
+          {
+            id: 'v1',
+            type: 'warm',
+            label: 'Liderazgo y talento humano',
+            text: '[Nombre], me acordé de ti con este video de Álvaro — habla exactamente de lo que me contaste, el tema del equipo y depender de ti para todo. Vale la pena los 10 minutos: https://youtu.be/xeSphxw6ZZc?si=YZxSW3647EVu8qW1'
+          },
+          {
+            id: 'v2',
+            type: 'warm',
+            label: 'Talento humano',
+            text: '[Nombre], Álvaro explica aquí cómo resolver el tema del talento — encontrar a las personas correctas y que el negocio no dependa de ti. Directo al punto: https://youtu.be/5cQG3TCMaVQ?si=H5248JGyCwZuBRLx'
+          },
+          {
+            id: 'v3',
+            type: 'warm',
+            label: 'Equipo de Marketing',
+            text: '[Nombre], si el dolor también está en no tener un equipo que genere clientes solo, este video es para ti: https://youtu.be/B5gUQJpTYSQ?si=H7RrNMuCxijCGhda'
+          }
+        ]
+      },
+      {
+        subtitle: '💰 Kryptonita Financiera — "Vendo pero no me queda plata"',
+        messages: [
+          {
+            id: 'v4',
+            type: 'warm',
+            label: 'Manejo de Finanzas',
+            text: '[Nombre], esto es exactamente lo que hablamos — cómo ordenar las finanzas para que lo que vendes se convierta en ganancia real. Álvaro lo explica en 10 minutos: https://youtu.be/mxdAgHiW6d4?si=Epm1RVcyPfGGM-hH'
+          },
+          {
+            id: 'v5',
+            type: 'warm',
+            label: 'Flujo de caja',
+            text: '[Nombre], si el tema es que vendes pero la plata no alcanza, el flujo de caja es la raíz. Esto te va a resonar: https://youtu.be/DfRGhMLxn7s?si=JzNSfyA5KZ3Vg9Ga'
+          },
+          {
+            id: 'v6',
+            type: 'warm',
+            label: 'Poner precios correctamente',
+            text: '[Nombre], muchas veces el problema no es que no vendes — es que los precios no están bien puestos y por eso no queda margen. Este video es clave: https://youtu.be/RoUP8bp81nE?si=spZyQmckqyoWnqeA'
+          },
+          {
+            id: 'v7',
+            type: 'warm',
+            label: 'Etapas de libertad financiera',
+            text: '[Nombre], Álvaro explica las etapas que todo empresario tiene que pasar para llegar a la libertad financiera real. ¿En cuál estás tú?: https://youtu.be/GlvzFQNPUHI?si=fQ0UBJEPPnpojefZ'
+          }
+        ]
+      },
+      {
+        subtitle: '📣 Kryptonita de Ventas — "Cada mes a inventar cómo vender"',
+        messages: [
+          {
+            id: 'v8',
+            type: 'warm',
+            label: 'Ventas y vendedores',
+            text: '[Nombre], si el tema es que las ventas dependen de ti o no tienes un sistema predecible, este video es exactamente para eso: https://youtu.be/w4pRpl32XMA?si=yf8b9x1USgF-jdba'
+          },
+          {
+            id: 'v9',
+            type: 'warm',
+            label: 'Aumentar los ingresos',
+            text: '[Nombre], me acordé de ti con este video — Álvaro habla de cómo crear un sistema que genere ingresos predecibles todos los meses: https://youtu.be/6BUGJPo5EHQ?si=gZ6j-bXiWqPd-zNa'
+          },
+          {
+            id: 'v10',
+            type: 'warm',
+            label: 'Cómo ganar dinero con TPL',
+            text: '[Nombre], esto te puede servir para ver cómo Álvaro estructura sus productos para vender más: https://youtu.be/q-5Ufo_Facs?si=DbrQr-3wxCmZWxjw'
+          },
+          {
+            id: 'v11',
+            type: 'warm',
+            label: 'Perfect Lunch — estrategia de ventas',
+            text: '[Nombre], el Perfect Lunch es una de las estrategias más poderosas de Luque para vender sin presión. Vale la pena verlo: https://youtu.be/43PnWyOHGlM?si=682bZMTEhAj3MLuP'
+          }
+        ]
+      },
+      {
+        subtitle: '🚀 Kryptonita de Escala — "No sé cómo crecer más"',
+        messages: [
+          {
+            id: 'v12',
+            type: 'warm',
+            label: 'Sistemas — cómo escalar',
+            text: '[Nombre], lo que me contaste de no saber cómo crecer más tiene que ver con esto — Álvaro explica por qué sin sistemas el crecimiento tiene techo: https://youtu.be/eVccaBgOUiE?si=pfrk7wIavAJTa7uK'
+          },
+          {
+            id: 'v13',
+            type: 'warm',
+            label: 'Sistemas — parte 2',
+            text: '[Nombre], segunda parte del tema de sistemas — cómo implementarlos en un negocio que ya está operando: https://youtu.be/AmjAIWyD2iQ?si=pSlPTGH-wBYhCSxr'
+          }
+        ]
+      },
+      {
+        subtitle: '🧠 Nutrición General — FUP o leads tibios',
+        messages: [
+          {
+            id: 'v14',
+            type: 'wa',
+            label: 'Soledad empresarial — conecta emocionalmente',
+            text: '[Nombre], este video de Álvaro habla de algo que muy pocos dicen en voz alta — la soledad del empresario. Me acordé de ti cuando lo vi: https://youtu.be/JDmnLx529hQ?si=fPS4mIX9JooA48bb'
+          },
+          {
+            id: 'v15',
+            type: 'wa',
+            label: 'Productividad — para quien dice no tener tiempo',
+            text: '[Nombre], si el tema es el tiempo y la sensación de estar siempre ocupado pero sin avanzar, esto es para ti: https://youtu.be/rZ8BoxTWTco?si=082X804szg1I1bh4'
+          },
+          {
+            id: 'v16',
+            type: 'wa',
+            label: 'Procrastinación — para quien pospone la decisión',
+            text: '[Nombre], Álvaro habla aquí de algo que me hizo pensar en ti — por qué postergamos las decisiones que más nos importan: https://youtu.be/TeA3NbFM1dI?si=Slb7ShxFInU2vA0p'
+          },
+          {
+            id: 'v17',
+            type: 'wa',
+            label: 'Cómo iniciar — para leads en etapa temprana',
+            text: '[Nombre], si estás en la etapa de arrancar o de dar el siguiente paso, este video es el punto de partida: https://youtu.be/60N5Z8ehwUc?si=ln-2d8wprOGvIHXr'
+          },
+          {
+            id: 'v18',
+            type: 'wa',
+            label: 'Objeciones — para el que siempre tiene peros',
+            text: '[Nombre], Álvaro habla aquí de las objeciones más comunes que se ponen los empresarios a sí mismos. Interesante verlo desde adentro: https://youtu.be/N7hf-gGe2TU?si=YCbpc3XpIpoxxg-a'
+          }
+        ]
+      }
+    ]
+  },
+  bonos: {
+    title: 'Bonos + Urgencia',
+    label: '3 capas · Usar en Zoom',
+    desc: 'Los bonos son tu herramienta de cierre más fuerte. Úsalos en ESCALERA — capa por capa, no todos juntos.',
+    tip: { type: 'gold', text: 'MUESTRA la página con pantalla compartida en el Zoom. No mandes link por WhatsApp antes del cierre — pierdes el momentum.' },
+    sections: [
+      {
+        subtitle: 'LAS 3 CAPAS DE URGENCIA',
+        messages: [
+          {
+            id: 'bz0',
+            type: 'warm',
+            label: 'El mapa — úsalas en este orden',
+            text: 'CAPA 1 — Cierre de puerta (lunes 11:59pm)\nLa generación cierra. No vuelve a abrir por 60-90 días.\n\nCAPA 2 — Ventana 24 HORAS\n2 bonos extra si entra HOY: Axelerate (3 días virtuales) + Análisis de Negocio personalizado.\n\nCAPA 3 — Pago único ($1,995)\nAhorra $400 + Acceso VITALICIO. Las cuotas no tienen Vitalicio.\n\nUsar: Minuto 25-28 → Capa 1 / Minuto 30-32 → Capa 2 / Minuto 38-42 → Capa 3'
+          }
+        ]
+      },
+      {
+        subtitle: 'CAPA 1 — Puerta de generación (min 25-28)',
+        messages: [
+          {
+            id: 'bz1',
+            type: 'urgent',
+            label: 'Antes de hablar de precio — el cierre del lunes',
+            text: '[Nombre], antes de que te muestre la inversión necesito que sepas una cosa — las puertas de esta generación de Máquina cierran este LUNES a las 11:59pm. Después de eso se cierra, Luque y su equipo se enfocan en acompañar a los que entraron, y la próxima generación abre en 60 a 90 días. Te lo digo para que tomes la decisión con toda la información — no para presionarte.'
+          }
+        ]
+      },
+      {
+        subtitle: 'CAPA 2 — Ventana 24 HORAS (min 30-32)',
+        messages: [
+          {
+            id: 'bz2',
+            type: 'urgent',
+            label: 'Cuando muestras los bonos (pantalla compartida)',
+            text: '[Nombre], mira esta parte porque es clave — Luque tiene una ventana de 24 HORAS desde que alguien entra en esta generación. Si tú decides hoy, en las próximas 24 horas, sumas 2 bonos que solo recibe quien entra rápido:\n\n1) AXELERATE — un evento virtual de 3 días intensivos en vivo con Álvaro. Puedes entrar tú con tu pareja, socio o equipo desde un mismo dispositivo. Salen con un plan claro y decisiones listas para implementar.\n\n2) ANÁLISIS DE NEGOCIO personalizado — empresarios con años de experiencia hacen una radiografía completa de tu negocio, te dan feedback y un plan de acción de crecimiento diseñado para TI.\n\nEstos 2 bonos valen más que la inversión. Pero solo los recibe quien decide en las primeras 24 horas.'
+          }
+        ]
+      },
+      {
+        subtitle: 'CAPA 3 — Pago único (min 38-42)',
+        messages: [
+          {
+            id: 'bz3',
+            type: 'urgent',
+            label: 'Cerrando — empuje al contado',
+            text: '[Nombre], cuando ya decidas entrar tienes 3 formas de pagar: un solo pago de $1,995, o 2 pagos de $1,100, o 4 pagos de $600. Pero te tengo que mostrar algo — el pago único de $1,995 tiene DOS diferencias grandes:\n\n1) Ahorras $400 vs las cuotas.\n2) Te quedas con ACCESO VITALICIO — es decir, todas las actualizaciones de Máquina de por vida. Las cuotas no tienen Vitalicio.\n\nSi tienes el capital hoy, el contado es el que más sentido tiene. Si no, igual puedes entrar con cuotas y mover. ¿Cómo lo ves?'
+          }
+        ]
+      },
+      {
+        subtitle: 'BONOS FIJOS — Para todos los que entren',
+        messages: [
+          {
+            id: 'bz4',
+            type: 'zoom',
+            label: 'Lista completa para enumerar en el zoom',
+            text: 'Los 4 regalos que vienen con Máquina (para todos los que entren):\n\n1) SISTEMA LIBERADOR DE DEUDAS — entrenamiento online para liberarte del peso financiero y volver a respirar.\n\n2) DEL FRACASO AL ÉXITO — sistema de 9 pasos para salir de la frustración y construir la vida que quieres.\n\n3) VIRALITY — curso para atraer clientes en redes sociales con resultados rápidos.\n\n4) PRODUCTIVIDAD CON IA — cómo ahorrar tiempo, reducir costos y multiplicar resultados usando Inteligencia Artificial.\n\nMás la mentoría en vivo con Álvaro (solo esta generación) y el acceso a la grabación completa de la nueva versión de MDD.'
+          }
+        ]
+      },
+      {
+        subtitle: 'MAESTRÍA $10K — Bonos específicos',
+        messages: [
+          {
+            id: 'bz5',
+            type: 'zoom',
+            label: 'Diferencial de Maestría sobre Máquina',
+            text: '[Nombre], Maestría es para empresarios que ya están facturando $500K+ al mes y necesitan el siguiente nivel de acompañamiento. Te incluye todo lo de Máquina + estos 3 diferenciales exclusivos:\n\n1) MASTERMIND EN EL APARTAMENTO DE ÁLVARO — acceso directo, presencial, en un ambiente de alto nivel.\n\n2) ADN — acompañamiento directo con Luque. No es con equipo, es con él.\n\n3) Los mismos bonos de Máquina (Axelerate, Análisis de Negocio, los 4 regalos, Liberador de Deudas, etc).\n\nSon $10,000 contado. Es para empresarios listos para el salto definitivo.'
+          }
+        ]
+      },
+      {
+        subtitle: 'Garantía — úsala si duda',
+        messages: [
+          {
+            id: 'bz6',
+            type: 'zoom',
+            label: 'El cierre de la garantía',
+            text: '[Nombre], y algo que quiero que sepas — Máquina tiene 7 días de garantía completa, sin condiciones ocultas. Entras, exploras todos los módulos, descargas materiales, aplicas las estrategias. Si dentro de esos 7 días decides que no es para ti, pides tu garantía directamente en la plataforma de pago y listo. El riesgo no existe — lo único que pierdes si NO entras es la ventana de 24 horas y el cupo de esta generación.'
+          }
+        ]
+      }
+    ]
+  },
+  precios: {
+    title: 'Productos y Precios',
+    label: 'Referencia',
+    desc: 'Lee la Kryptonita → decide el producto → ofrece.',
+    prices: [
+      {
+        name: 'Códigos',
+        price: '$420',
+        rows: [
+          ['Perfil', 'Puente / negocio temprano'],
+          ['Facturación', 'Cualquier nivel'],
+          ['Cierra por WA', 'Sí — fácilmente'],
+          ['Formato', 'Membresía mensual con Álvaro'],
+          ['Cupos', 'Abierto siempre'],
+          ['Comisión', '—']
+        ]
+      },
+      {
+        name: 'Máquina',
+        price: '$1,995',
+        rows: [
+          ['Perfil', 'Kryptonita clara, escalable'],
+          ['Facturación', '$50K+ al mes'],
+          ['Cierra por WA', 'Sí — con dolor claro'],
+          ['Formato', 'Sistema completo 1 año'],
+          ['Cupos', 'Por generaciones (cupo real)'],
+          ['Comisión David', '$90 contado'],
+          ['Opciones de pago', '$1,995 / 2x$1,100 / 4x$600']
+        ]
+      },
+      {
+        name: 'Maestría',
+        price: '$10,000',
+        rows: [
+          ['Perfil', 'Empresa establecida'],
+          ['Facturación', '$500K+ al mes'],
+          ['Cierra por WA', 'No — siempre Zoom'],
+          ['Formato', 'Acompañamiento élite'],
+          ['Cupos', 'Por generaciones'],
+          ['Comisión David', '$300']
+        ]
+      }
+    ]
+  }
+};
 
-                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                                        {/* Main Script */}
-                                        <div className="lg:col-span-7 bg-white rounded-[3rem] p-10 shadow-xl shadow-slate-200/50 border border-slate-100 space-y-8">
-                                            <div className="flex justify-between items-center border-b border-slate-100 pb-6">
-                                                <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900">{DATA?.stages?.[stage]?.title}</h2>
-                                                <span className="bg-slate-900 text-white px-5 py-2 rounded-2xl text-[11px] font-black tracking-widest uppercase">{DATA?.stages?.[stage]?.time}</span>
-                                            </div>
-                                            <div className="bg-indigo-50/50 p-6 rounded-3xl border-l-[6px] border-indigo-600 text-[13px] text-indigo-950 font-bold italic leading-relaxed">
-                                                "{DATA?.stages?.[stage]?.tip}"
-                                            </div>
-                                            <div className="space-y-4">
-                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Preguntas Maestro:</p>
-                                                {DATA?.stages?.[stage]?.questions?.map((q, i) => (
-                                                    <div key={i} onClick={() => copy(q)} className="p-6 bg-slate-50/50 rounded-[2rem] border border-slate-100 hover:bg-white hover:border-indigo-400 hover:shadow-xl hover:shadow-indigo-100/30 cursor-pointer transition-all flex justify-between items-center group">
-                                                        <p className="text-[15px] font-bold text-slate-700 leading-snug">{q}</p>
-                                                        <Icon name="copy" size={16} className="text-slate-300 group-hover:text-indigo-600" />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            {stage === 3 && aiData.plan && (
-                                                <div className="p-8 bg-slate-900 text-white rounded-[2.5rem] shadow-2xl relative overflow-hidden animate-in zoom-in">
-                                                    <Icon name="sparkles" className="absolute top-6 right-6 text-indigo-400 opacity-30" size={40} />
-                                                    <h4 className="text-[10px] font-black text-indigo-400 uppercase mb-4 tracking-widest border-b border-white/10 pb-2 flex items-center gap-2"><Icon name="brain" size={14}/> Plan Estratégico IA</h4>
-                                                    <p className="text-sm font-medium leading-relaxed italic text-indigo-50 whitespace-pre-line">{aiData.plan}</p>
-                                                    {aiData.objection && (
-                                                        <div className="mt-6 p-5 bg-rose-950/40 rounded-2xl border border-rose-500/30">
-                                                            <span className="text-[9px] font-black text-rose-400 uppercase block mb-2">Alerta: Objeción Probable</span>
-                                                            <p className="text-xs text-rose-100 font-bold leading-relaxed">{aiData.objection}</p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
+// ========== STATE ==========
+let favorites = JSON.parse(localStorage.getItem('playbook_favs') || '[]');
+let currentView = 'home';
 
-                                        {/* Profiler Panel */}
-                                        <div className="lg:col-span-5 bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 space-y-6 h-fit sticky top-32">
-                                            <h3 className="text-sm font-black uppercase flex items-center gap-3"><Icon name="target" className="text-indigo-600" /> Profiler Elite</h3>
-                                            <div className="space-y-5">
-                                                <div className="space-y-1">
-                                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Nombre del Lead</label>
-                                                    <input type="text" placeholder="Ej. Juan Pérez" className="w-full p-5 bg-slate-50 rounded-[1.5rem] text-sm font-bold border-none outline-none focus:ring-2 focus:ring-indigo-600 shadow-inner" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
-                                                </div>
-                                                <div className="bg-slate-50/50 p-6 rounded-[2rem] border border-slate-100">
-                                                    <div className="flex justify-between items-center mb-3">
-                                                        <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Facturación Mensual</label>
-                                                        <span className="font-black text-indigo-700">${form.revenue.toLocaleString()}</span>
-                                                    </div>
-                                                    <input type="range" min="0" max="60000" step="1000" value={form.revenue} onChange={e => setForm({...form, revenue: parseInt(e.target.value)})} />
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <label className="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Kryptonita / Fuga de Dinero</label>
-                                                    <textarea placeholder="Describe el dolor específico que detectaste..." className="w-full h-32 p-5 bg-slate-50 rounded-[1.5rem] text-[13px] font-medium outline-none resize-none focus:bg-white focus:ring-2 focus:ring-indigo-600 shadow-inner border-none" value={form.kryptonite} onChange={e => setForm({...form, kryptonite: e.target.value})} />
-                                                </div>
-                                                <button onClick={analyze} disabled={aiData.loading || !form.kryptonite} className="w-full bg-indigo-100 text-indigo-700 p-5 rounded-[1.5rem] font-black text-[11px] uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition-all shadow-md shadow-indigo-100/50 flex items-center justify-center gap-2">
-                                                    {aiData.loading ? "Analizando Fugas..." : <React.Fragment><Icon name="sparkles" size={14}/> Predecir Plan & Objeción</React.Fragment>}
-                                                </button>
-                                                <div className="grid grid-cols-2 gap-2 border-t pt-5">
-                                                    {DATA?.closingActions?.map(a => (
-                                                        <button key={a.id} onClick={() => setForm({...form, status: a.id})} className={`p-4 rounded-2xl text-[9px] font-black border transition-all ${form.status === a.id ? 'bg-[#0F172A] text-white shadow-xl' : 'bg-white text-slate-500 border-slate-100 hover:border-indigo-200'}`}>{a.label}</button>
-                                                    ))}
-                                                </div>
-                                                <button onClick={save} disabled={!form.name} className="w-full bg-[#1E293B] text-white p-6 rounded-[2rem] font-black text-sm uppercase tracking-widest shadow-2xl hover:bg-black active:scale-95 transition-all">Guardar Cierre</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+// ========== NAVIGATION ==========
+function abrirEscenario(id) {
+  const data = DATA[id];
+  if (!data) return;
 
-                            {tab === 'templates' && (
-                                <div className="space-y-8 animate-in slide-in-from-bottom-8 duration-500">
-                                    <div className="bg-indigo-950 p-12 rounded-[3.5rem] text-white relative overflow-hidden shadow-2xl">
-                                        <Icon name="send" size={80} className="absolute -right-8 -bottom-8 opacity-10 rotate-12" />
-                                        <h2 className="text-4xl font-black uppercase tracking-tighter mb-2">Librería de Mensajes</h2>
-                                        <p className="text-indigo-300 font-bold tracking-widest uppercase text-xs">Concepto: Escasez, Kryptonita y Resultados Reales</p>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        {DATA?.templates?.map((cat, idx) => (
-                                            <div key={idx} className="space-y-4">
-                                                <h3 className="text-xs font-black text-indigo-600 uppercase tracking-[0.3em] ml-6">{cat.cat}</h3>
-                                                <div className="space-y-4">
-                                                    {cat?.items?.map((item, i) => (
-                                                        <div key={i} onClick={() => copy(item.text)} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl hover:border-indigo-400 transition-all cursor-pointer group flex flex-col justify-between h-full">
-                                                            <div>
-                                                                <div className="flex justify-between items-start mb-4">
-                                                                    <h4 className="font-black text-slate-900 text-sm uppercase tracking-tighter">{item.title}</h4>
-                                                                    <Icon name="clipboard" className="text-slate-200 group-hover:text-indigo-600" />
-                                                                </div>
-                                                                <p className="text-xs text-slate-600 italic leading-relaxed bg-slate-50 p-5 rounded-3xl border border-slate-50 group-hover:bg-indigo-50/30 transition-colors">"{item.text}"</p>
-                                                            </div>
-                                                            <div className="mt-6 flex items-center gap-2 text-[10px] font-black text-emerald-600 uppercase"><Icon name="check-circle" size={12}/> Oficial Luque Academy</div>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
+  currentView = id;
+  document.getElementById('homeView').classList.add('hidden');
+  document.getElementById('searchResults').classList.remove('active');
+  document.getElementById('scenarioView').classList.add('active');
+  document.getElementById('backBtn').classList.add('show');
+  document.getElementById('logo').style.display = 'none';
+  document.getElementById('pageTitle').classList.add('show');
+  document.getElementById('pageTitle').textContent = data.label || data.title;
 
-                            {tab === 'history' && (
-                                <div className="space-y-8 animate-in slide-in-from-right duration-500">
-                                    <div className="flex justify-between items-end mb-4">
-                                        <h2 className="text-4xl font-black uppercase tracking-tighter">Historial Elite</h2>
-                                        <div className="bg-white px-6 py-3 rounded-3xl shadow-lg border border-slate-100 flex gap-6">
-                                            <div className="text-center"><p className="text-[9px] font-black text-slate-400 uppercase">Leads</p><p className="text-xl font-black text-indigo-600">{history?.length || 0}</p></div>
-                                            <div className="text-center"><p className="text-[9px] font-black text-slate-400 uppercase">Com. Total</p><p className="text-xl font-black text-emerald-600">${(history?.length || 0) * 90}</p></div>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 gap-6">
-                                        {(!history || history.length === 0) ? <div className="bg-white p-24 rounded-[3rem] text-center border-2 border-dashed border-slate-200 text-slate-400 font-black uppercase tracking-widest">Sin registros aún</div> :
-                                            history.map(n => (
-                                                <div key={n.id} className="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-xl shadow-slate-200/40 hover:shadow-2xl transition-all group overflow-hidden">
-                                                    <div className="flex justify-between items-start mb-8">
-                                                        <div className="flex gap-6">
-                                                            <div className="w-16 h-16 rounded-[1.5rem] bg-indigo-600 text-white flex items-center justify-center font-black text-2xl shadow-xl">{n?.name?.[0] || '?'}</div>
-                                                            <div>
-                                                                <h3 className="text-2xl font-black text-slate-900">{n.name}</h3>
-                                                                <div className="flex gap-4 mt-2">
-                                                                    <span className="text-[10px] font-black uppercase text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">{n.product}</span>
-                                                                    <span className="text-[10px] font-black uppercase text-slate-400">Factura: ${n?.revenue?.toLocaleString() || 0}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex flex-col items-end gap-3">
-                                                            <span className={`px-5 py-2 rounded-full text-[10px] font-black uppercase border ${DATA?.closingActions?.find(a => a.id === n.status)?.color || 'bg-slate-50'}`}>{DATA?.closingActions?.find(a => a.id === n.status)?.label || 'Estado'}</span>
-                                                            <button onClick={() => {
-                                                                const updated = history.filter(x => x.id !== n.id);
-                                                                setHistory(updated); localStorage.setItem('luque_elite_v6', JSON.stringify(updated));
-                                                            }} className="text-slate-200 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"><Icon name="trash-2" size={18} /></button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                                        <div className="bg-slate-50/80 p-6 rounded-[2rem] border border-slate-100 shadow-inner">
-                                                            <span className="text-[9px] font-black text-slate-400 uppercase block mb-2 border-b pb-1">Diagnóstico Kryptonita</span>
-                                                            <p className="text-sm font-bold italic text-slate-700">"{n.kryptonite}"</p>
-                                                        </div>
-                                                        {n.plan && <div className="bg-[#0F172A] p-6 rounded-[2rem] text-[13px] text-slate-200 leading-relaxed italic">{n.plan}</div>}
-                                                    </div>
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                </div>
-                            )}
-                        </section>
-                    </div>
-                </div>
-            );
-        };
+  renderScenario(data);
+  window.scrollTo(0, 0);
+}
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+function goHome() {
+  currentView = 'home';
+  document.getElementById('homeView').classList.remove('hidden');
+  document.getElementById('scenarioView').classList.remove('active');
+  document.getElementById('searchResults').classList.remove('active');
+  document.getElementById('backBtn').classList.remove('show');
+  document.getElementById('logo').style.display = '';
+  document.getElementById('pageTitle').classList.remove('show');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('show');
+  renderFavorites();
+}
+
+// ========== RENDER ==========
+function renderScenario(data) {
+  const container = document.getElementById('scenarioView');
+  let html = `
+    <div class="scenario-header">
+      <div class="scenario-header-label">${data.label}</div>
+      <div class="scenario-header-title">${data.title}</div>
+      <div class="scenario-header-desc">${data.desc}</div>
+    </div>
+  `;
+
+  if (data.tip) {
+    html += `<div class="tip ${data.tip.type}"><span class="tip-icon">${data.tip.type === 'red' ? '⛔' : data.tip.type === 'gold' ? '⭐' : 'ℹ️'}</span><div>${data.tip.text}</div></div>`;
+  }
+
+  // Phases (Durante zoom)
+  if (data.phases) {
+    html += `<div class="subsection-title">Las 5 fases del Zoom</div>`;
+    data.phases.forEach(p => {
+      html += `
+        <div class="phase-row">
+          <div class="phase-badge">
+            <div class="phase-num">${p.n}</div>
+            <div class="phase-time">${p.time}</div>
+          </div>
+          <div class="phase-content">
+            <div class="phase-name">${p.name}</div>
+            <div class="phase-title">${p.title}</div>
+            <div class="phase-desc">${p.desc}</div>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // FUP Days
+  if (data.fupDays) {
+    html += `<div class="subsection-title">Mapa del FUP</div>`;
+    data.fupDays.forEach(d => {
+      html += `
+        <div class="fup-day">
+          <div class="fup-day-badge" style="color: ${d.color};">
+            <div class="fup-day-label">día</div>
+            <div class="fup-day-num">${d.n}</div>
+          </div>
+          <div class="fup-day-content">
+            <div class="fup-day-title">${d.title}</div>
+            <div class="fup-day-desc">${d.desc}</div>
+          </div>
+        </div>
+      `;
+    });
+    html += `<div class="subsection-divider"></div>`;
+  }
+
+  // Sections with messages
+  if (data.sections) {
+    data.sections.forEach(sec => {
+      html += `<div class="subsection-title">${sec.subtitle}</div>`;
+      sec.messages.forEach(m => {
+        const isFav = favorites.some(f => f.id === m.id);
+        html += `
+          <div class="msg-group">
+            <div class="msg-meta">
+              <div class="msg-label">${m.label}</div>
+              <button class="fav-btn ${isFav ? 'active' : ''}" data-msgid="${m.id}" onclick="toggleFavorite(event, '${m.id}', '${escapeHtml(m.label)}', '${encodeURIComponent(m.text)}', '${m.type}')">★</button>
+            </div>
+            <button class="msg-card type-${m.type}" onclick="copyMsg(this, '${encodeURIComponent(m.text)}')">${escapeHtml(m.text)}<div class="msg-card-tap">[tap para copiar]</div></button>
+          </div>
+        `;
+      });
+    });
+  }
+
+  // Objeciones
+  if (data.objeciones) {
+    data.objeciones.forEach(o => {
+      html += `
+        <div class="obj-item">
+          <div class="obj-q">${o.q}</div>
+          <div class="obj-a">${o.a}</div>
+        </div>
+      `;
+    });
+  }
+
+  // Prices
+  if (data.prices) {
+    data.prices.forEach(p => {
+      html += `
+        <div class="price-card">
+          <div class="price-card-header">
+            <div class="price-card-name">${p.name}</div>
+            <div class="price-card-price">${p.price}</div>
+          </div>
+      `;
+      p.rows.forEach(r => {
+        html += `
+          <div class="price-card-row">
+            <div class="price-card-row-label">${r[0]}</div>
+            <div class="price-card-row-val">${r[1]}</div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    });
+  }
+
+  if (data.bottomTip) {
+    html += `<div class="tip ${data.bottomTip.type}"><span class="tip-icon">${data.bottomTip.type === 'red' ? '⛔' : '⭐'}</span><div>${data.bottomTip.text}</div></div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+}
+
+// ========== COPY ==========
+function copyMsg(el, encoded) {
+  const text = decodeURIComponent(encoded);
+  // Extract actual text if the button contains the tap hint
+  navigator.clipboard.writeText(text).then(() => {
+    showToast('✓ Copiado al portapapeles');
+    el.style.background = 'rgba(212, 255, 78, 0.08)';
+    setTimeout(() => el.style.background = '', 400);
+  }).catch(() => {
+    showToast('No pude copiar. Selecciona manualmente.');
+  });
+}
+
+function showToast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ========== FAVORITES ==========
+function toggleFavorite(e, id, label, encodedText, type) {
+  e.stopPropagation();
+  const existing = favorites.findIndex(f => f.id === id);
+  if (existing >= 0) {
+    favorites.splice(existing, 1);
+    showToast('✕ Removido de favoritos');
+  } else {
+    favorites.push({ id, label, text: decodeURIComponent(encodedText), type });
+    showToast('★ Agregado a favoritos');
+  }
+  localStorage.setItem('playbook_favs', JSON.stringify(favorites));
+  // Update button
+  const btn = e.target;
+  btn.classList.toggle('active');
+}
+
+function renderFavorites() {
+  const container = document.getElementById('favoritesContainer');
+  if (favorites.length === 0) {
+    container.innerHTML = '<div class="fav-empty">Aún no tienes favoritos. Toca la ★ en cualquier mensaje.</div>';
+    return;
+  }
+  let html = '';
+  favorites.forEach(f => {
+    html += `
+      <div class="msg-group">
+        <div class="msg-meta">
+          <div class="msg-label">${f.label}</div>
+          <button class="fav-btn active" onclick="removeFavorite(event, '${f.id}')">★</button>
+        </div>
+        <button class="msg-card type-${f.type}" onclick="copyMsg(this, '${encodeURIComponent(f.text)}')">${escapeHtml(f.text)}<div class="msg-card-tap">[tap para copiar]</div></button>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function removeFavorite(e, id) {
+  e.stopPropagation();
+  favorites = favorites.filter(f => f.id !== id);
+  localStorage.setItem('playbook_favs', JSON.stringify(favorites));
+  renderFavorites();
+  showToast('✕ Removido de favoritos');
+}
+
+// ========== SEARCH ==========
+function buildSearchIndex() {
+  const index = [];
+  Object.keys(DATA).forEach(scenKey => {
+    const scen = DATA[scenKey];
+    (scen.sections || []).forEach(sec => {
+      (sec.messages || []).forEach(m => {
+        index.push({
+          scenario: scenKey,
+          scenarioTitle: scen.title,
+          subsection: sec.subtitle,
+          label: m.label,
+          text: m.text,
+          type: m.type,
+          id: m.id
+        });
+      });
+    });
+    (scen.objeciones || []).forEach((o, i) => {
+      index.push({
+        scenario: scenKey,
+        scenarioTitle: scen.title,
+        subsection: 'Objeciones',
+        label: o.q,
+        text: o.a,
+        type: 'zoom',
+        id: 'obj-' + i
+      });
+    });
+  });
+  return index;
+}
+
+const searchIndex = buildSearchIndex();
+
+function performSearch(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    document.getElementById('searchResults').classList.remove('active');
+    if (currentView === 'home') {
+      document.getElementById('homeView').classList.remove('hidden');
+    } else {
+      document.getElementById('scenarioView').classList.add('active');
+    }
+    return;
+  }
+
+  const results = searchIndex.filter(item => {
+    return item.text.toLowerCase().includes(q) ||
+           item.label.toLowerCase().includes(q) ||
+           item.subsection.toLowerCase().includes(q) ||
+           item.scenarioTitle.toLowerCase().includes(q);
+  });
+
+  document.getElementById('homeView').classList.add('hidden');
+  document.getElementById('scenarioView').classList.remove('active');
+  document.getElementById('searchResults').classList.add('active');
+
+  const container = document.getElementById('searchResults');
+  if (results.length === 0) {
+    container.innerHTML = `<div class="search-empty">Nada que coincida con "<strong>${escapeHtml(query)}</strong>"</div>`;
+    return;
+  }
+
+  let html = `<div class="section-label">${results.length} resultado${results.length === 1 ? '' : 's'}</div>`;
+  results.forEach(r => {
+    html += `
+      <button class="search-result-item" onclick="copyMsg(this, '${encodeURIComponent(r.text)}')">
+        <div class="search-result-type">${r.type}</div>
+        <div class="search-result-location">${r.scenarioTitle} · ${r.subsection}</div>
+        <div class="search-result-preview">${escapeHtml(r.text)}</div>
+      </button>
+    `;
+  });
+  container.innerHTML = html;
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchClear').classList.remove('show');
+  performSearch('');
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const val = e.target.value;
+  document.getElementById('searchClear').classList.toggle('show', val.length > 0);
+  performSearch(val);
+});
+
+// ========== INIT ==========
+renderFavorites();
+</script>
+
 </body>
 </html>
