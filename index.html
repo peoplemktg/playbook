@@ -870,6 +870,13 @@ main {
 
   <div class="section-label">Acceso rápido</div>
   <div class="quick-grid">
+    <button class="quick-card featured" onclick="abrirEscenario('decision')">
+      <div class="quick-card-icon">⚡</div>
+      <div>
+        <div class="quick-card-title">Pedir la Decisión (post-zoom)</div>
+        <div class="quick-card-desc">Sí / No / Pensando / Sin respuesta · Qué hacer en cada caso</div>
+      </div>
+    </button>
     <button class="quick-card featured" onclick="abrirEscenario('bonos')">
       <div class="quick-card-icon">🎁</div>
       <div>
@@ -1401,6 +1408,127 @@ const DATA = {
       { q: '"No tengo tiempo"', a: '"¿Cuánto tiempo le dedicas a empujar todo tú solo? Máquina son 20 min al día — menos de lo que gastas apagando fuegos."' },
       { q: '"¿Y si no me sirve?"', a: '"La pregunta correcta es: ¿y si sigues 6 meses más con la Kryptonita activa? El riesgo real es quedarte como estás."' },
       { q: '"Espero al próximo lanzamiento"', a: '"Es tu decisión. Pero son 60-90 días más. En ese tiempo tu Kryptonita te cuesta [X] según lo que calculaste. ¿Vale la pena?"' }
+    ]
+  },
+  decision: {
+    title: 'Pedir la Decisión',
+    label: 'Post-zoom · 2-3 días',
+    desc: 'Le diste fecha, enviaste info, esperaste. Ahora necesitas su sí o su no. Directo, sin rodeos.',
+    tip: { type: 'gold', text: 'No preguntes "¿cómo estás?" ni agregues contexto. Pregunta directo. Los que van a decir sí ya lo saben — solo necesitan que les preguntes.' },
+    sections: [
+      {
+        subtitle: 'MENSAJE BASE — Pedir la decisión (día 2-3)',
+        messages: [
+          {
+            id: 'dc1',
+            type: 'urgent',
+            label: 'Directo · Sin rodeos',
+            text: '[Nombre], quedamos en que hoy/mañana me dabas una respuesta. ¿Qué decidiste?'
+          },
+          {
+            id: 'dc2',
+            type: 'urgent',
+            label: 'Con recordatorio de cupo',
+            text: '[Nombre], quedamos en que esta semana me dabas una respuesta sobre Máquina. ¿Qué decidiste? Te pregunto directo porque el cupo de esta generación no aguanta mucho más.'
+          },
+          {
+            id: 'dc3',
+            type: 'warm',
+            label: 'Con recordatorio de bonos 24h (si aún están vigentes)',
+            text: '[Nombre], ¿qué decidiste sobre Máquina? Te pregunto porque si entras hoy todavía alcanzas los bonos de 24 horas — Axelerate + el Análisis de Negocio personalizado. Mañana ya no están disponibles.'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI RESPONDE "SÍ, VAMOS" 🟢',
+        messages: [
+          {
+            id: 'dc4',
+            type: 'wa',
+            label: 'Cierre inmediato — manda el link',
+            text: 'Perfecto [Nombre], me alegra mucho. Aquí el link de pago: [LINK]. Recuerda que si pagas hoy en las próximas horas todavía activas los bonos de 24h. Cuando confirmes el pago me avisas y coordino tu acceso.'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI RESPONDE "TODAVÍA LO ESTOY PENSANDO" 🟡',
+        messages: [
+          {
+            id: 'dc5',
+            type: 'urgent',
+            label: 'Destapar la objeción real',
+            text: '[Nombre], entiendo. Una pregunta directa — ¿qué es lo que te está frenando específicamente? Porque son cosas distintas: si es el capital, si es el momento, o si tienes una duda del programa. Dime cuál es y lo resolvemos.'
+          },
+          {
+            id: 'dc6',
+            type: 'urgent',
+            label: 'Si sigue vago después de esa pregunta',
+            text: '[Nombre], mira — no te voy a presionar. Pero sí te voy a ser honesto: mientras sigues pensando tu Kryptonita de [la que identificaron] sigue activa en tu negocio. El cupo de esta generación cierra el [fecha]. Si no es ahora, el próximo lanzamiento es en 60-90 días. ¿Qué prefieres?'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI RESPONDE "NO PUEDO ECONÓMICAMENTE" 🔴',
+        messages: [
+          {
+            id: 'dc7',
+            type: 'warm',
+            label: 'Puente a Códigos $420',
+            text: '[Nombre], lo entiendo. Mira — no quiero que salgas de esto sin nada, porque lo que identificamos en tu Kryptonita es real. Hay una opción que se llama Códigos del Dinero, es la membresía mensual de Álvaro a $420. Entras hoy, empiezas a trabajar el tema desde adentro, y cuando abra la próxima generación de Máquina tienes acceso prioritario. ¿Te sirve esa opción?'
+          },
+          {
+            id: 'dc8',
+            type: 'warm',
+            label: 'Si Códigos también le queda grande',
+            text: '[Nombre], está bien. Lo que te recomiendo es enfocarte en vender los próximos 60 días, guardar, y cuando abra la próxima generación de Máquina vuelves. Aquí vamos a estar. Te voy a seguir invitando a los Zoom Lives mensuales para que sigas en contacto con el contenido de Álvaro — sin compromiso. El próximo es el [fecha].'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI RESPONDE "NO ES EL MOMENTO" 🔴',
+        messages: [
+          {
+            id: 'dc9',
+            type: 'zoom',
+            label: 'Respetar + sembrar para el próximo lanzamiento',
+            text: '[Nombre], lo respeto. Una pregunta antes de cerrar — ¿qué tendría que cambiar en tu negocio para que sí sea el momento? Lo pregunto porque eso es exactamente lo que trabaja Máquina, y cuando abra el próximo lanzamiento quiero poder decirte si tiene más sentido o no.'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI NO RESPONDE después de pedir la decisión 🔴',
+        messages: [
+          {
+            id: 'dc10',
+            type: 'urgent',
+            label: '48h después sin respuesta — último intento',
+            text: '[Nombre], te escribí hace 2 días y no he tenido respuesta. Voy a asumir que por ahora no es el momento. El cupo de esta generación lo voy a dejar disponible para alguien más. Cuando sientas que es el momento aquí voy a estar — y te aviso cuando abra el próximo lanzamiento.'
+          },
+          {
+            id: 'dc11',
+            type: 'wa',
+            label: 'Pasa a nutrición — invitación Zoom Live',
+            text: '[Nombre], te voy a invitar al Zoom Live del próximo miércoles a las 7pm con uno de los mentores de Luque. No hay compromiso — es una hora de valor real sobre [tema]. ¿Te aparto el cupo?'
+          }
+        ]
+      },
+      {
+        subtitle: 'SI DICE "SÍ PERO NECESITO MÁS TIEMPO" 🟡',
+        messages: [
+          {
+            id: 'dc12',
+            type: 'urgent',
+            label: 'Ponerle fecha concreta',
+            text: '[Nombre], perfecto. ¿Cuándo exactamente? Necesito una fecha porque el cupo no lo puedo guardar indefinidamente. Dime — ¿el [día]?'
+          },
+          {
+            id: 'dc13',
+            type: 'urgent',
+            label: 'Si da una fecha — confirmar y marcar en tu calendario',
+            text: 'Perfecto [Nombre], agendado. El [fecha que dio] te escribo. Para ese momento ya sabes que tienes mi cupo guardado. ¿Correcto?'
+          }
+        ]
+      }
     ]
   },
   videos: {
